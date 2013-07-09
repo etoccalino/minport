@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="es" />
+
+    <title>minport - Mini Importaciones</title>
+
+    <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" /> -->
+    {% block extrastyles %}
+    {% endblock %}
+    <!-- <style> -->
+    <!--   body{padding:50px;} -->
+    <!--   .frm-top{margin:0;} -->
+    <!--   .tar{text-align:right;} -->
+    <!-- </style> -->
+  </head>
+
+  <body>
+
+    {% block navbar %}
+    {% include "navbar.html" %}
+    {% endblock %}
+
+    {% block sidebar %}
+    {% endblock %}
+
+    <div id="content" class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    {% block footer %}
+    {% include "footer.html" %}
+      {% block extrafooter %}
+      {% endblock %}
+    {% endblock %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script> -->
+    {% block extrascripts %}
+    {% endblock %}
+ </body>
+</html>
