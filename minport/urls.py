@@ -5,5 +5,5 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'', include('minport.base.urls')),
+    url(r'', include('base.urls')),
 )

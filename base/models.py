@@ -1,4 +1,4 @@
-from django import models
+from django.db import models
 from django.contrib.auth.models import User
 
 
@@ -9,7 +9,8 @@ class Consumer (User):
 class Package (models.Model):
 
     # Who bought the package. NULL if package has not been bought.
-    buyer = models.ForeignKey(Consumer, related='packages_bought', null=True)
+    buyer = models.ForeignKey(Consumer, null=True,
+                              related_name='packages_bought')
 
 
 class ItemOrder (models.Model):
@@ -19,7 +20,7 @@ class ItemOrder (models.Model):
     consumer = models.ForeignKey(Consumer, related_name='item_orders')
 
     # Number of items to buy.
-    quantity = models.PositiveInteger(default=1)
+    quantity = models.PositiveIntegerField(default=1)
 
     item = models.OneToOneField('Item')
 
@@ -31,14 +32,14 @@ class ItemOrder (models.Model):
     # TRUE means the 'package' attribute should be used. FALSE means the item
     # order is still potential, and the 'potential_packages' attribute should
     # be used instead.
-    bought = models.Boolean(default=False)
-    package = models.ForeignKey(Package, related='item_orders', null=True)
+    bought = models.BooleanField(default=False)
+    package = models.ForeignKey(Package, related_name='item_orders', null=True)
     potential_packages = models.ManyToManyField(
-        Package, related='potential_item_orders')
+        Package, related_name='potential_item_orders')
 
     def total_cost(self):
-        "Total cost of the order (no discounts applied)."
-        return self.cost * self.quantity
+        "Total cost of the order (no discounts applied), in cents."
+        return self.item.cost * self.quantity
 
 
 class Item (models.Model):
@@ -47,8 +48,8 @@ class Item (models.Model):
     # Descriptive name of the item to buy.
     name = models.CharField(max_length=30, blank=False)
 
-    # Cost of an individual item.
-    cost = models.PositiveNumber()
+    # Cost of an individual item, in cents.
+    cost = models.PositiveIntegerField()
 
     # URL in the provider's domain
     url = models.URLField()
@@ -57,5 +58,5 @@ class Item (models.Model):
 class Constrains (models.Model):
     "Money and time constrains on a individual item buy."
 
-    # How much the consumer is willing to pay for shipping.
-    max_shipping_cost = models.PositiveInteger()
+    # How much the consumer is willing to pay for shipping, in cents.
+    max_shipping_cost = models.PositiveIntegerField()
