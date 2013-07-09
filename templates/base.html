@@ -7,22 +7,18 @@
 
     <title>minport - Mini Importaciones</title>
 
-    <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css" /> -->
-    <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" /> -->
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
     {% block extrastyles %}
     {% endblock %}
-    <!-- <style> -->
-    <!--   body{padding:50px;} -->
-    <!--   .frm-top{margin:0;} -->
-    <!--   .tar{text-align:right;} -->
-    <!-- </style> -->
+    <style>
+      body{padding:50px;}
+      .frm-top{margin:0;}
+      .tar{text-align:right;}
+    </style>
   </head>
 
   <body>
-    {% block sidebar %}
-    {% endblock %}
-
-    <div id="content" class="container">
+    <div id="content" class="container-fluid">
       {% block content %}
       {% endblock %}
     </div>
@@ -34,6 +30,7 @@
     {% endblock %}
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
     <!-- <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script> -->
     {% block extrascripts %}
     {% endblock %}
