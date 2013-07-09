@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 
 
 class Consumer (User):
-    pass
+
+    def __unicode__(self):
+        return "%s %s" % (self.first_name, self.last_name)
 
 
 class Package (models.Model):

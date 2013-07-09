@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p> Has cerrado tu sesión  </p>
+{% endblock %}
+
+{% block extrascripts %}
+<script>
+  $(document).ready(function () {
+    setTimeout(function () {
+      window.location.href = "{% url 'home' %}";
+    }, 1500);
+  });
+</script>
+{% endblock %}
