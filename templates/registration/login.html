@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if error_message %}
+<p class="errornote">{{ error_message }}</p>
+{% endif %}
+
+{% if form.errors %}
+<p>Clave o usuario incorrecto. Por favor intenta nuevamente</p>
+{% endif %}
+
+<form action="{{ LOGIN_URL }}" method="post" id="login-form">{% csrf_token %}
+  <div class="form-row">
+    {% if not form.this_is_the_login_form.errors %}{{ form.username.errors }}{% endif %}
+    <label for="id_username">Usuario</label> <input type="text" name="username" id="id_username" />
+  </div>
+  <div class="form-row">
+    <label for="id_password">Clave</label> <input type="password" name="password" id="id_password" />
+    <input type="hidden" name="this_is_the_login_form" value="1" />
+    <input type="hidden" name="next" value="{{ next }}" />
+  </div>
+  <div class="submit-row">
+    <label>&nbsp;</label><input class="btn" type="submit" value="Ingresar" />
+  </div>
+</form>
+
+<script type="text/javascript">
+document.getElementById('id_username').focus()
+</script>
+
+{% endblock %}
