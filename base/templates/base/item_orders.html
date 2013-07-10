@@ -12,7 +12,7 @@
       {% if item_orders_list %}
       <ul>
       {% for item_order in item_orders_list %}
-        <li>{{ item_order.item }} ({{ item_order.quantity }})</li>
+        <li>{{ item_order.item_name }} ({{ item_order.quantity }})</li>
       {% endfor %}
       </ul>
       {% else %}
