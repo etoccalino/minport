@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     (r'^login/$', 'django.contrib.auth.views.login'),
     (r'^logout/$', 'django.contrib.auth.views.logout'),
 
-    url(r'', include('base.urls')),
+    url(r'', include('base.urls', namespace='base')),
 )

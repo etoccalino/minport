@@ -158,7 +158,7 @@ LOGGING = {
 }
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'base:home'
 LOGOUT_URL = '/logout/'
 
 try:
