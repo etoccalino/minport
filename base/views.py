@@ -2,10 +2,10 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic.list import ListView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import CreateView, UpdateView
 
 from models import Consumer, ItemOrder
-from forms import ItemOrderForm
+from forms import NewItemOrderForm, EditItemOrderForm
 
 
 class ItemOrders (ListView):
@@ -21,14 +21,19 @@ class ItemOrders (ListView):
         return super(ItemOrders, self).dispatch(*args, **kwargs)
 
 
-class NewItemOrder (FormView):
+class NewItemOrder (CreateView):
     template_name = 'base/item_order_form.html'
-    form_class = ItemOrderForm
+    form_class = NewItemOrderForm
     success_url = reverse_lazy('base:home')
 
     def form_valid(self, form):
-        result = super(NewItemOrder, self).form_valid(form)
         consumer = Consumer.objects.get(pk=self.request.user.pk)
         form.instance.consumer = consumer
-        form.save()
-        return result
+        return super(NewItemOrder, self).form_valid(form)
+
+
+class EditItemOrder (UpdateView):
+    template_name = 'base/item_order_form.html'
+    model = ItemOrder
+    form_class = EditItemOrderForm
+    success_url = reverse_lazy('base:home')
