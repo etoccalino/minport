@@ -58,6 +58,9 @@ class Item (models.Model):
     # URL in the provider's domain
     url = models.URLField()
 
+    def __unicode__(self):
+        return self.name
+
 
 class Constrains (models.Model):
     "Money and time constrains on a individual item buy."

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+
+      <h2>Mis Pendientes</h2>
+      <a href="/nuevo/" class="btn btn-primary">Nuevo</a>
+      <hr>
+
+      {% if item_orders_list %}
+      <ul>
+      {% for item_order in item_orders_list %}
+        <li>{{ item_order.item }} ({{ item_order.quantity }})</li>
+      {% endfor %}
+      </ul>
+      {% else %}
+      <p>...nada para comprar...</p>
+      {% endif %}
+    </div>
+
+    <div class="span9">
+    </div>
+  </div>
+</div>
+{% endblock %}
