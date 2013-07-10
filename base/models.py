@@ -15,10 +15,19 @@ class Package (models.Model):
                               related_name='packages_bought')
 
 
-class BuyOrder (models.Model):
-    "An intention to but some items."
+class ItemOrder (models.Model):
+    "An intention to buy a number of a particular item."
 
+    # Who ordered this item.
     consumer = models.ForeignKey(Consumer, related_name='item_orders')
+
+    # Number of items to buy.
+    quantity = models.PositiveIntegerField(default=1)
+
+    item = models.OneToOneField('Item')
+
+    # Consumer constrains for this item order.
+    constrains = models.OneToOneField('Constrains')
 
     # Whether this item order has been bought.
     #
@@ -29,28 +38,6 @@ class BuyOrder (models.Model):
     package = models.ForeignKey(Package, related_name='item_orders', null=True)
     potential_packages = models.ManyToManyField(
         Package, related_name='potential_item_orders')
-
-    def total_cost(self):
-        "Total cost of the order (no discounts applied), in cents."
-        accum = 0
-        for order in self.item_orders.all():
-            accum += order.total_cost
-        return accum
-
-
-class ItemOrder (models.Model):
-    "An intention to buy a number of a particular item."
-
-    # The item to but.
-    item = models.OneToOneField('Item')
-
-    # Number of items to buy.
-    quantity = models.PositiveIntegerField(default=1)
-
-    # Consumer constrains for this item order.
-    constrains = models.OneToOneField('Constrains')
-
-    buy_order = models.ForeignKey(BuyOrder, related_name='item_orders')
 
     def total_cost(self):
         "Total cost of the order (no discounts applied), in cents."
