@@ -324,7 +324,7 @@
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
-    "last_login": "2013-07-09T23:44:34.713Z",
+    "last_login": "2013-07-11T05:47:33.773Z",
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$10000$8fwjWwhSKZcP$o+m8x29+23GHvWcIoGs70ZwUTmK1EQbOpr+bmMGqb98=",
@@ -360,7 +360,7 @@
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
-    "last_login": "2013-07-09T23:43:56.423Z",
+    "last_login": "2013-07-11T05:34:32.302Z",
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$10000$jYVcg5s0FBjm$JikKTrbrQvlAT4Qbmtkz04ToXz+S6weHjQdktZo+2dU=",
@@ -397,6 +397,42 @@
   "model": "base.package",
   "fields": {
     "consumer": 4,
+    "bought": false
+  }
+},
+{
+  "pk": 1,
+  "model": "base.itemorder",
+  "fields": {
+    "packages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "item_name": "resistores",
+    "url": "",
+    "quantity": 20,
+    "consumer": 2,
+    "item_cost": "0.2",
+    "bought": false
+  }
+},
+{
+  "pk": 2,
+  "model": "base.itemorder",
+  "fields": {
+    "packages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "item_name": "baterias",
+    "url": "",
+    "quantity": 2,
+    "consumer": 4,
+    "item_cost": "5",
     "bought": false
   }
 }
