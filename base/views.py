@@ -31,9 +31,17 @@ class NewItemOrder (CreateView):
         form.instance.consumer = consumer
         return super(NewItemOrder, self).form_valid(form)
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NewItemOrder, self).dispatch(*args, **kwargs)
+
 
 class EditItemOrder (UpdateView):
     template_name = 'base/item_order_form.html'
     model = ItemOrder
     form_class = EditItemOrderForm
     success_url = reverse_lazy('base:home')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EditItemOrder, self).dispatch(*args, **kwargs)
