@@ -8,8 +8,6 @@
       <h2>Pendientes</h2>
       <a href="/nuevo/" class="btn btn-primary">Nuevo</a>
       <hr>
-
-      {% if item_orders_list %}
       <ul>
       {% for item_order in item_orders_list %}
         {% if item_order.consumer.pk == user.pk %}
@@ -17,9 +15,6 @@
         {% endif %}
       {% endfor %}
       </ul>
-      {% else %}
-      <p>...nada para comprar...</p>
-      {% endif %}
     </div>
 
     <div class="span9">
