@@ -6,15 +6,21 @@ class Consumer (User):
     class Meta:
         proxy = True
 
+    def package(self):
+        self.package_set
+
     def __unicode__(self):
         return "%s %s" % (self.first_name, self.last_name)
 
 
 class Package (models.Model):
+    "Each consumer should have exactly one package with bought==False"
 
-    # Who bought the package. NULL if package has not been bought.
-    buyer = models.ForeignKey(Consumer, null=True,
-                              related_name='packages_bought')
+    # Who can buy the package.
+    consumer = models.ForeignKey(Consumer)
+
+    # Whether this package has been bought.
+    bought = models.BooleanField(default=False)
 
 
 class ItemOrder (models.Model):
@@ -35,24 +41,48 @@ class ItemOrder (models.Model):
     # Number of items to buy.
     quantity = models.PositiveIntegerField('cantidad a comprar', default=1)
 
-    # How much the consumer is willing to pay for shipping.
-    max_shipping_cost = models.DecimalField(
-        'quE tanto pensas pagar de shipping?', decimal_places=2, max_digits=5)
-
     # URL in the provider's domain
     url = models.URLField(blank=True)
 
     # Whether this item order has been bought.
     #
-    # TRUE means the 'package' attribute should be used. FALSE means the item
-    # order is still potential, and the 'potential_packages' attribute should
-    # be used instead.
+    # It's an model attribute to allow filtering, but it's really a property:
+    # self.bought == self.packages.filter(bought=True).exists()
     bought = models.BooleanField(default=False, editable=False)
-    package = models.ForeignKey(
-        Package, related_name='item_orders', null=True, editable=False)
-    potential_packages = models.ManyToManyField(
-        Package, related_name='potential_item_orders', editable=False)
+
+    # Packages this item is presently included in.
+    packages = models.ManyToManyField(Package, related_name='item_orders',
+                                      editable=False)
 
     def total_cost(self):
         "Total cost of the order (no discounts applied), in cents."
         return self.item.cost * self.quantity
+
+
+# Tie in the package life cycle to that of the Consumer/User
+#
+# When a new user is created, create a "full" package and associate it.
+# Users cannot be eliminated, and so packages are never eliminated either.
+
+from django.db.models.signals import post_save
+
+
+def new_user(sender, instance, created, raw, **kwargs):
+    "Assign a full package to the new user"
+
+    # Only for User or its proxy.
+    if sender is not Consumer and sender is not User:
+        return
+
+    # Only if user is not loaded from fixtures and is new.
+    if not raw and created:
+        consumer = instance
+        if sender is User:
+            consumer = Consumer.objects.get(pk=instance.pk)
+
+        package = Package(consumer=consumer)
+        item_orders = ItemOrder.objects.filter(bought=False)
+        for item in item_orders:
+            package.item_orders.add(item)
+        package.save()
+post_save.connect(new_user, weak=False, dispatch_uid="new_user_new_package")

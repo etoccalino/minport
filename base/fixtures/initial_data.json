@@ -367,5 +367,29 @@
     "email": "lucaschiesa@gmail.com",
     "date_joined": "2013-07-09T23:43:01.157Z"
   }
+},
+{
+  "pk": 1,
+  "model": "base.package",
+  "fields": {
+    "consumer": 2,
+    "bought": false
+  }
+},
+{
+  "pk": 2,
+  "model": "base.package",
+  "fields": {
+    "consumer": 3,
+    "bought": false
+  }
+},
+{
+  "pk": 3,
+  "model": "base.package",
+  "fields": {
+    "consumer": 4,
+    "bought": false
+  }
 }
 ]
