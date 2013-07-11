@@ -18,6 +18,20 @@
     </div>
 
     <div class="span9">
+      <h2>Podes Comprar</h2>
+
+      <p>Querido {{ consumer }}, si estas dispuesto a pagar {{ consumer.shipping_contribution|stringformat:"d" }} podes hacer la compra ahora :)</p>
+
+      {% include "base/shipping_bar.partial.html" %}
+
+      <p>Junto con tus cosas, viajarian los siguientes articulos:</p>
+      <ul>
+      {% for item_order in item_orders_list %}
+        {% if item_order.consumer.pk != user.pk %}
+        <li>{{ item_order.item_name }} ({{ item_order.quantity }}) - para {{ item_order.consumer }}</li>
+        {% endif %}
+      {% endfor %}
+      </ul>
     </div>
   </div>
 </div>

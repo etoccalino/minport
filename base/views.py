@@ -16,6 +16,12 @@ class ItemOrders (ListView):
         consumer = Consumer.objects.get(pk=self.request.user.pk)
         return consumer.package.item_orders.all()
 
+    def get_context_data(self, **kwargs):
+        context = super(ItemOrders, self).get_context_data(**kwargs)
+        consumer = Consumer.objects.get(pk=self.request.user.pk)
+        context['consumer'] = consumer
+        return context
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(ItemOrders, self).dispatch(*args, **kwargs)
