@@ -11,7 +11,7 @@ class Consumer (User):
         return self.package_set.get(bought=False)
 
     def __unicode__(self):
-        return "%s %s" % (self.first_name, self.last_name)
+        return self.get_full_name()
 
 
 class Package (models.Model):
