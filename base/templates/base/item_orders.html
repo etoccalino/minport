@@ -20,7 +20,8 @@
     <div class="span9">
       <h2>Podes Comprar</h2>
 
-      <p>Querido {{ consumer }}, si estas dispuesto a pagar {{ consumer.shipping_contribution|stringformat:"d" }} podes hacer la compra ahora :)</p>
+      <p>Si estas dispuesto a pagar ${{ consumer.shipping_contribution|floatformat:-2 }} de shipping podes hacer la compra ahora :)</p>
+      <p>El total es ${{ consumer.package.total_cost|floatformat:-2 }} (${{ consumer.package.items_cost|floatformat:-2 }} la compra, ${{ consumer.package.shipping_cost|floatformat:-2 }} el envio)</p>
 
       {% include "base/shipping_bar.partial.html" %}
 

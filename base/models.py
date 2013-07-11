@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,6 +11,23 @@ class Consumer (User):
     @property
     def package(self):
         return self.package_set.get(bought=False)
+
+    def shipping_contribution_relative(self):
+        ratio = Decimal(0)
+        total = self.package.shipping_cost()
+        if total:
+            ratio = self.shipping_contribution() / total
+        return Decimal(100) * ratio
+
+    def cost_contribution_relative(self):
+        items_cost = self.package.items_cost()
+        if not items_cost:
+            return Decimal(0)
+        return self.package.consumer_items_cost() / items_cost
+
+    def shipping_contribution(self):
+        total = self.package.shipping_cost()
+        return total * self.cost_contribution_relative()
 
     def __unicode__(self):
         return self.get_full_name()
@@ -22,6 +41,30 @@ class Package (models.Model):
 
     # Whether this package has been bought.
     bought = models.BooleanField(default=False)
+
+    def buy(self):
+        "Mark this package as bought and replace with a new one."
+        self.bought = True
+        self.save()
+        new_package = Package(consumer=self.consumer)
+        item_orders = ItemOrder.objects.filter(bought=False)
+        for item in item_orders:
+            new_package.item_orders.add(item)
+        new_package.save()
+
+    def consumer_items_cost(self):
+        "The cost in the package which represents the consumer item orders."
+        return sum([order.total_cost() for order in self.item_orders.all()
+                    if order.consumer == self.consumer])
+
+    def items_cost(self):
+        return sum([order.total_cost() for order in self.item_orders.all()])
+
+    def shipping_cost(self):
+        return Decimal(20.0)
+
+    def total_cost(self):
+        return self.items_cost() + self.shipping_cost()
 
 
 class ItemOrder (models.Model):
@@ -56,8 +99,8 @@ class ItemOrder (models.Model):
                                       editable=False)
 
     def total_cost(self):
-        "Total cost of the order (no discounts applied), in cents."
-        return self.item.cost * self.quantity
+        "Total cost of the order (no discounts applied)."
+        return self.item_cost * self.quantity
 
 
 # Tie in the package life cycle to that of the Consumer/User
