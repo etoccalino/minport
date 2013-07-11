@@ -372,7 +372,7 @@
   "pk": 1,
   "model": "base.package",
   "fields": {
-    "consumer": 2,
+    "consumer": 1,
     "bought": false
   }
 },
@@ -380,12 +380,20 @@
   "pk": 2,
   "model": "base.package",
   "fields": {
-    "consumer": 3,
+    "consumer": 2,
     "bought": false
   }
 },
 {
   "pk": 3,
+  "model": "base.package",
+  "fields": {
+    "consumer": 3,
+    "bought": false
+  }
+},
+{
+  "pk": 4,
   "model": "base.package",
   "fields": {
     "consumer": 4,

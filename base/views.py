@@ -13,8 +13,8 @@ class ItemOrders (ListView):
     context_object_name = 'item_orders_list'
 
     def get_queryset(self):
-        return ItemOrder.objects.filter(bought=False,
-                                        consumer=self.request.user)
+        consumer = Consumer.objects.get(pk=self.request.user.pk)
+        return consumer.package.item_orders.all()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -27,9 +27,14 @@ class NewItemOrder (CreateView):
     success_url = reverse_lazy('base:home')
 
     def form_valid(self, form):
+        # Add this consumer to the new item order
         consumer = Consumer.objects.get(pk=self.request.user.pk)
         form.instance.consumer = consumer
-        return super(NewItemOrder, self).form_valid(form)
+        result = super(NewItemOrder, self).form_valid(form)
+        # Add this item to all non-bought packages, including this consumer's
+        for consumer in Consumer.objects.all():
+            consumer.package.item_orders.add(form.instance)
+        return result
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):

@@ -6,8 +6,9 @@ class Consumer (User):
     class Meta:
         proxy = True
 
+    @property
     def package(self):
-        self.package_set
+        return self.package_set.get(bought=False)
 
     def __unicode__(self):
         return "%s %s" % (self.first_name, self.last_name)

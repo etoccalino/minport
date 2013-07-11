@@ -5,14 +5,16 @@
   <div class="row-fluid">
     <div class="span3">
 
-      <h2>Mis Pendientes</h2>
+      <h2>Pendientes</h2>
       <a href="/nuevo/" class="btn btn-primary">Nuevo</a>
       <hr>
 
       {% if item_orders_list %}
       <ul>
       {% for item_order in item_orders_list %}
+        {% if item_order.consumer.pk == user.pk %}
         <li><a href="{% url 'base:edit_item_order' item_order.pk %}">{{ item_order.item_name }} ({{ item_order.quantity }})</a></li>
+        {% endif %}
       {% endfor %}
       </ul>
       {% else %}
