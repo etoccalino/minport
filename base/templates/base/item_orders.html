@@ -12,9 +12,9 @@
       <ul>
       {% for item_order in consumer.item_orders.all %}
         <li>
-          <a href="{% url 'base:edit_item_order' item_order.pk %}">{{ item_order.item_name }} ({{ item_order.quantity }})</a>
           <form method="post" action="{% url 'base:remove_item_order' pk=item_order.pk %}">{% csrf_token %}
-            <input type="submit" class="btn" value="delete">
+            <a href="{% url 'base:edit_item_order' item_order.pk %}">{{ item_order.item_name }} ({{ item_order.quantity }})</a>
+            <input type="image" src="https://njgin.state.nj.us/oit/gis/NJ_NJGINExplorer/IW/images/deleteX_12.gif" alt="delete" title="delete">
           </form>
         </li>
       {% endfor %}
@@ -39,9 +39,9 @@
       {% for item_order in consumer.package.item_orders.all %}
         {% if item_order.consumer.pk != user.pk %}
         <li>
-          {{ item_order.item_name }} ({{ item_order.quantity }}) - para {{ item_order.consumer }}
           <form method="post" action="{% url 'base:remove_item_order' pk=item_order.pk %}">{% csrf_token %}
-            <input type="submit" class="btn" value="delete">
+            {{ item_order.item_name }} ({{ item_order.quantity }}) - para {{ item_order.consumer }}
+            <input type="image" src="http://www.imathlete.com/images/account/icon_x_delete_off.gif" alt="remove" title="remove">
           </form>
         </li>
         {% endif %}
