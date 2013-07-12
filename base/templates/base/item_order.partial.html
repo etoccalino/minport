@@ -1,6 +1,0 @@
-<li>
-  <a href="{% url 'base:edit_item_order' item_order.pk %}">{{ item_order.item_name }} ({{ item_order.quantity }})</a>
-  <form method="post" action="{% url 'base:remove_item_order' pk=item_order.pk %}">{% csrf_token %}
-    <input type="submit" class="btn" value="delete">
-  </form>
-</li>

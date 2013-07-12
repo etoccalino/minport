@@ -11,7 +11,12 @@
       <ul>
       {% for item_order in item_orders_list %}
         {% if item_order.consumer.pk == user.pk %}
-        {% include "base/item_order.partial.html" %}
+        <li>
+          <a href="{% url 'base:edit_item_order' item_order.pk %}">{{ item_order.item_name }} ({{ item_order.quantity }})</a>
+          <form method="post" action="{% url 'base:remove_item_order' pk=item_order.pk %}">{% csrf_token %}
+            <input type="submit" class="btn" value="delete">
+          </form>
+        </li>
         {% endif %}
       {% endfor %}
       </ul>
@@ -29,7 +34,12 @@
       <ul>
       {% for item_order in item_orders_list %}
         {% if item_order.consumer.pk != user.pk %}
-        <li>{{ item_order.item_name }} ({{ item_order.quantity }}) - para {{ item_order.consumer }}</li>
+        <li>
+          {{ item_order.item_name }} ({{ item_order.quantity }}) - para {{ item_order.consumer }}
+          <form method="post" action="{% url 'base:remove_item_order' pk=item_order.pk %}">{% csrf_token %}
+            <input type="submit" class="btn" value="delete">
+          </form>
+        </li>
         {% endif %}
       {% endfor %}
       </ul>
