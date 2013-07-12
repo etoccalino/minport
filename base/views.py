@@ -1,6 +1,8 @@
+from django.shortcuts import get_object_or_404, redirect
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.views.generic.base import View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
@@ -56,3 +58,19 @@ class EditItemOrder (UpdateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(EditItemOrder, self).dispatch(*args, **kwargs)
+
+
+class RemoveItemOrder (View):
+
+    def post(self, request, pk):
+        item = get_object_or_404(ItemOrder, pk=pk)
+        consumer = Consumer.objects.get(pk=self.request.user.pk)
+        if item.consumer == consumer:
+            item.delete()
+        else:
+            item.packages.remove(consumer.package)
+        return redirect('base:home')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(RemoveItemOrder, self).dispatch(*args, **kwargs)

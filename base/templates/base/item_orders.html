@@ -11,7 +11,7 @@
       <ul>
       {% for item_order in item_orders_list %}
         {% if item_order.consumer.pk == user.pk %}
-        <li><a href="{% url 'base:edit_item_order' item_order.pk %}">{{ item_order.item_name }} ({{ item_order.quantity }})</a></li>
+        {% include "base/item_order.partial.html" %}
         {% endif %}
       {% endfor %}
       </ul>
