@@ -8,21 +8,25 @@
       <h2>Pendientes</h2>
       <a href="/nuevo/" class="btn btn-primary">Nuevo</a>
       <hr>
+      {% if consumer.item_orders.all %}
       <ul>
-      {% for item_order in item_orders_list %}
-        {% if item_order.consumer.pk == user.pk %}
+      {% for item_order in consumer.item_orders.all %}
         <li>
           <a href="{% url 'base:edit_item_order' item_order.pk %}">{{ item_order.item_name }} ({{ item_order.quantity }})</a>
           <form method="post" action="{% url 'base:remove_item_order' pk=item_order.pk %}">{% csrf_token %}
             <input type="submit" class="btn" value="delete">
           </form>
         </li>
-        {% endif %}
       {% endfor %}
       </ul>
+      {% else %}
+      <p>...nada para comprar...</p>
+      {% endif %}
     </div>
 
     <div class="span9">
+    {% if consumer.item_orders.all %}
+
       <h2>Podes Comprar</h2>
 
       <p>Si estas dispuesto a pagar ${{ consumer.shipping_contribution|floatformat:-2 }} de shipping podes hacer la compra ahora :)</p>
@@ -32,7 +36,7 @@
 
       <p>Junto con tus cosas, viajarian los siguientes articulos:</p>
       <ul>
-      {% for item_order in item_orders_list %}
+      {% for item_order in consumer.package.item_orders.all %}
         {% if item_order.consumer.pk != user.pk %}
         <li>
           {{ item_order.item_name }} ({{ item_order.quantity }}) - para {{ item_order.consumer }}
@@ -43,6 +47,11 @@
         {% endif %}
       {% endfor %}
       </ul>
+
+    {% else %}
+      <h2>No Podes Comprar...</h2>
+      <p>...hasta que no agregues algo para comprar para vos.</p>
+    {% endif %}
     </div>
   </div>
 </div>
