@@ -1,7 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.urlresolvers import reverse_lazy
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView
 
@@ -14,10 +12,6 @@ class ItemOrders (View):
         return render(request, 'base/item_orders.html', {
             'consumer': Consumer.objects.get(pk=self.request.user.pk)
         })
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ItemOrders, self).dispatch(*args, **kwargs)
 
 
 class NewItemOrder (CreateView):
@@ -35,20 +29,12 @@ class NewItemOrder (CreateView):
             consumer.package.item_orders.add(form.instance)
         return result
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(NewItemOrder, self).dispatch(*args, **kwargs)
-
 
 class EditItemOrder (UpdateView):
     template_name = 'base/item_order_form.html'
     model = ItemOrder
     form_class = EditItemOrderForm
     success_url = reverse_lazy('base:home')
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(EditItemOrder, self).dispatch(*args, **kwargs)
 
 
 class RemoveItemOrder (View):
@@ -60,7 +46,3 @@ class RemoveItemOrder (View):
         else:
             item.packages.remove(consumer.package)
         return redirect('base:home')
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(RemoveItemOrder, self).dispatch(*args, **kwargs)
