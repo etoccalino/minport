@@ -8,20 +8,20 @@ import autocomplete
 
 
 class AutocompleteTestCase (unittest.TestCase):
-    fixture = 'fixtures/dx.com.resistor'
+    fixture = 'fixtures/dx.com.resistors'
 
     def setUp(self):
         page_buffer = open(self.fixture).read()
-        self.completer = autocomplete.Completer(page=page_buffer)
+        self.complete = autocomplete.Complete(page=page_buffer)
 
     def test_can_find_thumbnail(self):
         url = "//img.dxcdn.com/productimages/sku_152206_1_small.jpg"
-        thumbnail = self.completer.thumbnail()
+        thumbnail = self.complete.thumbnail()
         self.assertTrue(thumbnail.endswith(url))
 
     def test_can_find_name(self):
         expected = "0.25W 18K~47KR Resistor Assortment Kit (220 PCS)"
-        name = self.completer.name()
+        name = self.complete.name()
         self.assertEqual(expected, name)
 
 
