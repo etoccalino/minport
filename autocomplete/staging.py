@@ -1,18 +1,13 @@
 import unittest
 import autocomplete
 
-#
-# The fixture is a downloaded copy of:
-# http://dx.com/p/0-25w-18k-47kr-resistor-assortment-kit-220-pcs-152206
-#
 
-
-class AutocompleteFixedTestCase (unittest.TestCase):
-    fixture = 'fixtures/dx.com.resistors'
+class StageTestCase (unittest.TestCase):
+    URL = ('http://dx.com/p'
+           '/0-25w-18k-47kr-resistor-assortment-kit-220-pcs-152206')
 
     def setUp(self):
-        page_buffer = open(self.fixture).read()
-        self.complete = autocomplete.Complete(page=page_buffer)
+        self.complete = autocomplete.Complete(url=self.URL)
 
     def test_can_find_thumbnail(self):
         url = "//img.dxcdn.com/productimages/sku_152206_1_small.jpg"

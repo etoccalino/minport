@@ -14,7 +14,7 @@ class Complete (object):
 
     def __init__(self, url='', page=None):
         if page is None:
-            page = requests.get(sanitize_url(url)).text()
+            page = requests.get(sanitize_url(url)).text
         self.document = PyQuery(page)
 
     def _complete_url(self, url=''):
@@ -29,3 +29,6 @@ class Complete (object):
 
     def name(self):
         return self.document('#headline')[0].get('title')
+
+    def price(self):
+        return self.document('#price')[0].text
