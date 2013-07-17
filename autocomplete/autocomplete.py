@@ -28,7 +28,13 @@ class Complete (object):
         return self._complete_url(imgs[0].get('src'))
 
     def name(self):
-        return self.document('#headline')[0].get('title')
+        try:
+            return self.document('#headline')[0].get('title')
+        except IndexError:
+            raise LookupError("No name found")
 
     def price(self):
-        return self.document('#price')[0].text
+        try:
+            return self.document('#price')[0].text
+        except IndexError:
+            raise LookupError("No name found")

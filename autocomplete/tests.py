@@ -30,5 +30,21 @@ class AutocompleteFixedTestCase (unittest.TestCase):
         self.assertEqual(expected, price)
 
 
+class ErrorSafeFixedTestCase (unittest.TestCase):
+    fixture = '<!DOCTYPE HTML><HTML><HEAD></HEAD><BODY></BODY></HTML>'
+
+    def setUp(self):
+        self.complete = autocomplete.Complete(page=self.fixture)
+
+    def test_no_thumbnail(self):
+        self.assertRaises(LookupError, self.complete.thumbnail)
+
+    def test_no_name(self):
+        self.assertRaises(LookupError, self.complete.name)
+
+    def test_no_price(self):
+        self.assertRaises(LookupError, self.complete.price)
+
+
 if __name__ == "__main__":
     unittest.main()
