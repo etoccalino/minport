@@ -4,3 +4,39 @@
 {% block content %}
 {% crispy form %}
 {% endblock %}
+
+{% block extrascripts %}
+<script>
+  function replateIfEmpty ($field, value) {
+    if (! $field.val()) {
+      $field.val(value);
+    }
+  }
+  function startCompletion ($url) {
+    $url.attr('disabled', 'disabled');
+    $('<span id="spinner"><i class="icon-refresh"></i></span>').insertAfter($url);
+  }
+  function endCompletion () {
+    $url.attr('disabled', null);
+    $('#spinner').remove();
+  }
+
+  $(document).ready(function () {
+    $name = $('#id_item_name');
+    $cost = $('#id_item_cost');
+    $url  = $('#id_url');
+
+    $url.on('focusout', function (event) {
+      startCompletion($url);
+      $.getJSON("{% url 'complete:simple' %}", {
+        q: $url.val()
+      }).success(function (data) {
+        replateIfEmpty($name, data.name);
+        replateIfEmpty($cost, data.price);
+      }).always(function () {
+        endCompletion();
+      });
+    });
+   });
+</script>
+{% endblock %}
